@@ -8,13 +8,20 @@ router.get("/v1/book", (ctx, next) => {
 
 router.post("/v1/:id/classic/latest", (ctx, next) => {
     const { request } = ctx
-    const path = request.path
-    console.log("path",ctx.params); // 获取 url 里面的 :xxx 参数
-    console.log("path",request.query); // 获取 url ? 后的参数
-    console.log("path",request.body); // 获取 body 里面的参数
-    console.log("path",request.header); // 获取 header
+    const params = ctx.path // 获取 url 里面的 :xxx 参数
+    const query = request.query  // 获取 url ? 后的参数
+    const body = request.body // 获取 body 里面的参数
+    const header = request.header // 获取 header
 
-    throw new Error("API EXCETION")
+    if (!query || Object.keys(query).length === 0) {
+        const error = new Error("出错啦")
+        error.errorCode = 10001
+        error.message = "没有填写参数"
+        error.status = 400
+        error.requestUrl = `${ctx.method} ${ctx.path}`
+
+        throw error
+    }
 })
 
 module.exports = router
