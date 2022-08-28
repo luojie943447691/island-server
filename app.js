@@ -1,9 +1,11 @@
 const Koa = require('koa')
 const parser = require('koa-bodyparser')
 const InitManeger = require('./core/init')
+const handleError = require('./middlewares/exceptions')
 const app = new Koa()
 // 注意先后顺序。有了接收 body 的中间件之后，才能在之后的路由中使用
 app.use(parser())
+app.use(handleError)
 // 初始化 
 InitManeger.initCore(app)
 

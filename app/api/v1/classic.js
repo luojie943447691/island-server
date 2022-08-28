@@ -13,6 +13,8 @@ router.post("/v1/:id/classic/latest", (ctx, next) => {
     console.log("path",request.query); // 获取 url ? 后的参数
     console.log("path",request.body); // 获取 body 里面的参数
     console.log("path",request.header); // 获取 header
+
+    throw new Error("API EXCETION")
 })
 
 module.exports = router
