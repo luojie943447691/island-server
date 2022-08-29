@@ -1,4 +1,5 @@
 const Router = require('koa-router')
+// const { ParameterException } = require('../../../core/http-exception1')
 
 const router = new Router()
 
@@ -14,12 +15,8 @@ router.post("/v1/:id/classic/latest", (ctx, next) => {
     const header = request.header // 获取 header
 
     if (!query || Object.keys(query).length === 0) {
-        const error = new Error("出错啦")
-        error.errorCode = 10001
-        error.message = "没有填写参数"
-        error.status = 400
-        error.requestUrl = `${ctx.method} ${ctx.path}`
-
+        // const error = new ParameterException()
+        const error = new global.errors.ParameterException()
         throw error
     }
 })

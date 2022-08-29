@@ -1,4 +1,5 @@
-async function handleError(ctx, next){
+const { HttpException } = require('../core/http-exception1')
+async function handleError(ctx, next) {
     try {
         await next()
     }
@@ -13,17 +14,30 @@ async function handleError(ctx, next){
         // 异常分为 已知异常 和 未知异常
         // 已知异常，如 我们自己抛出的错误
         // 未知异常，如 账号密码错误、代码本身出错
-        
+
+        // * 版本一：异常抛出
         // 由于我们设置的 拥有 errorCode 的就是已知异常 
-        if(error.errorCode){
+        // if(error.errorCode){
+        //     ctx.body = {
+        //         msg:error.message,
+        //         errorCode:error.errorCode,
+        //         request:error.requestUrl
+        //     }
+        //     ctx.status = error.status
+        // }
+        // else{
+        // }
+
+        // * 版本二：抛出异常
+        if (error instanceof HttpException) {
             ctx.body = {
-                msg:error.message,
-                errorCode:error.errorCode,
-                request:error.requestUrl
+                msg: error.message,
+                errorCode: error.errorCode,
+                request: `${ctx.method} ${ctx.path}`
             }
             ctx.status = error.status
         }
-        else{
+        else {
 
         }
     }
