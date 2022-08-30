@@ -1,5 +1,6 @@
 const Router = require('koa-router')
-// const { ParameterException } = require('../../../core/http-exception1')
+const { ParameterException } = require('../../../core/http-exception1')
+const { PositiveIntegerValidator } = require('../../volidators/validator')
 
 const router = new Router()
 
@@ -14,11 +15,16 @@ router.post("/v1/:id/classic/latest", (ctx, next) => {
     const body = request.body // 获取 body 里面的参数
     const header = request.header // 获取 header
 
-    if (!query || Object.keys(query).length === 0) {
-        // const error = new ParameterException()
-        const error = new global.errors.ParameterException()
-        throw error
-    }
+    const v = new PositiveIntegerValidator().validate(ctx)
+    // 自动转换成数字了，
+    const id = v.get('path.id',parsed = false)
+
+    // if (!query || Object.keys(query).length === 0) {
+    //     const error = new ParameterException()
+    //     throw error
+    // }
+    // throw new Error('123')
+    console.log("123");
 })
 
 module.exports = router

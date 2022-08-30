@@ -28,6 +28,10 @@ async function handleError(ctx, next) {
         // else{
         // }
 
+        // 区分 生产环境和开发环境
+        if (global.config.enviroment === 'dev') {
+            throw error
+        }
         // * 版本二：抛出异常
         if (error instanceof HttpException) {
             ctx.body = {
@@ -38,7 +42,12 @@ async function handleError(ctx, next) {
             ctx.status = error.status
         }
         else {
-
+            ctx.body = {
+                msg: "服务器弄丢了(●'◡'●)",
+                errorCode: 9999,
+                request: `${ctx.method} ${ctx.path}`
+            }
+            ctx.status = 500
         }
     }
 }
