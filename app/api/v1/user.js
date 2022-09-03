@@ -5,6 +5,7 @@ const router = new Router({
 
 const { RegisterValidator } = require('../../volidators/validator')
 const { User } = require('../../models/user')
+const { Success } = require('../../../core/http-exception1')
 
 
 router.post('/register', async (ctx) => {
@@ -18,7 +19,8 @@ router.post('/register', async (ctx) => {
         nickName: v.get('body.nickName'),
     }
     const res = await User.create(user)
-    console.log("res", res);
+    // 最后处理成功，我们也用抛出异常的方式
+    throw new Success()
 })
 
 
