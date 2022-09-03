@@ -7,9 +7,9 @@ class InitManeger {
     static app;
     static initCore(app) {
         InitManeger.app = app
+        InitManeger.initConfig()
         InitManeger.initLoadRoutes()
         InitManeger.initExceptions()
-        InitManeger.initConfig()
     }
 
     // 初始化路由
@@ -34,9 +34,10 @@ class InitManeger {
 
     // 全局导入 自定义配置文件
     static initConfig(){
-        const config = require(resolve(curPath,'./config/config'))
+        const config = require(resolve(curPath,'./app/config/config'))
         global.config = config
     }
+    
 }
 
 module.exports = InitManeger
