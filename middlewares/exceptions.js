@@ -28,12 +28,16 @@ async function handleError(ctx, next) {
         // else{
         // }
 
-        // 区分 生产环境和开发环境
-        if (global.config.enviroment === 'dev') {
+        // 区分是否是自定义的异常 
+        const isHttpExcption = error instanceof HttpException
+        const isDev = global.config.enviroment === 'dev'
+
+        // 区分 生产环境和开发环境，并且不是 HttpException 
+        if (isDev && !isHttpExcption) {
             throw error
         }
         // * 版本二：抛出异常
-        if (error instanceof HttpException) {
+        if (isHttpExcption) {
             ctx.body = {
                 msg: error.message,
                 errorCode: error.errorCode,
