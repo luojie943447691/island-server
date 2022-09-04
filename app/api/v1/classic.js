@@ -1,24 +1,16 @@
 const Router = require('koa-router')
-const {resolve} = require('path')
+const { resolve } = require('path')
 const { ParameterException } = require('../../../core/http-exception1')
+const { Auth } = require('../../../middlewares/auth')
 const { PositiveIntegerValidator } = require('../../volidators/validator')
 
-const router = new Router()
-
-router.get("/v1/book", (ctx, next) => {
-    ctx.body = { "123": "book" }
+const router = new Router({
+    prefix: '/v1/classic'
 })
 
-router.post("/v1/:id/classic/latest", async (ctx, next) => {
-    const { request } = ctx
-    const params = ctx.path // 获取 url 里面的 :xxx 参数
-    const query = request.query  // 获取 url ? 后的参数
-    const body = request.body // 获取 body 里面的参数
-    const header = request.header // 获取 header
+router.get("/latest", new Auth(9).m, async (ctx, next) => {
 
-    const v = new PositiveIntegerValidator().validate(ctx)
-    // 自动转换成数字了，
-    const id = v.get('path.id',parsed = false)
+    ctx.body = { a: ctx.auth.scope }
 })
 
 module.exports = router
